@@ -5,8 +5,8 @@ __pycache__
 *.egg-info/
 
 # 忽略某个具体的文件
-./code/results_20231019.zip
+code/results_20231019.zip
 
-# 排除 build/ 目录下的文件（但不包括build/目录本身）
-./code/results/*
-./data/*
+# 排除特定 目录下的文件（但不包括目录本身）
+code/results/*
+data/*
