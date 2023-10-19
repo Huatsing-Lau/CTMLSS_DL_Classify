@@ -8,5 +8,5 @@ __pycache__
 code/results_20231019.zip
 
 # 排除特定 目录下的文件（但不包括目录本身）
-code/results/*
+code/results/*pkl
 data/*
