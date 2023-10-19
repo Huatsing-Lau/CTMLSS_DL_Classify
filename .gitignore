@@ -1,0 +1,12 @@
+# 忽略所有 __pycache__ 目录
+__pycache__
+
+# 忽略所有 .egg-info 目录
+*.egg-info/
+
+# 忽略某个具体的文件
+./code/results_20231019.zip
+
+# 排除 build/ 目录下的文件（但不包括build/目录本身）
+./code/results/*
+./data/*
