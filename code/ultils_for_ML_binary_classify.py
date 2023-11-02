@@ -301,8 +301,37 @@ def visualize_reduced_decision_boundary(clf,
     return
 
 
-import numpy
-import pandas
+def get_DCA_coords(y_true:numpy.ndarray, y_proba:numpy.ndarray, eps=1e-6):
+    """
+    DCA曲线
+    y_proba: shape是(num_samples,)
+    y_true: shape是(num_samples,)
+    """
+    if type(y_true)==pandas.core.frame.DataFrame:
+        y_true = y_true.values
+    y_true = y_true.squeeze()
+    N = len(y_true)# 总数据量
+    
+    pt_arr = []
+    net_bnf_arr = []
+    y_proba = y_proba.ravel()
+    for pt in np.arange(0,1,0.01):
+        #compute TP FP
+        y_proba_clip = (y_proba>pt).astype(int)
+        TP = np.sum( y_true*np.round(y_proba_clip) )
+        FP = np.sum((1 - y_true) * np.round(y_proba_clip))
+        net_bnf = ( TP-(FP * (pt+eps)/(1-pt+eps)) )/N
+        pt_arr.append(pt)
+        net_bnf_arr.append(net_bnf)
+    # all negtive
+    allneg_net_bnf_arr = np.zeros_like(pt_arr)
+    # all positive
+    pt_np = np.array(pt_arr)
+    pi = np.sum(y_true)/len(y_true)# 患病率
+    allpos_net_bnf_arr = pi-(1-pi)*pt_np/(1-pt_np)
+    return pt_arr, net_bnf_arr, allpos_net_bnf_arr, allneg_net_bnf_arr
+
+
 def plot_DCA(y_proba:numpy.ndarray, y_true:numpy.ndarray, clf_name='', fn:str="DCA.png", show=False):
     """
     DCA曲线
